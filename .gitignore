@@ -1,0 +1,33 @@
+# ===================== IDEs =====================
+# IntelliJ (modern projects use .idea; keep it out of Git)
+.idea/
+*.iml
+out/
+
+# VS Code: ignore everything by default
+.vscode/
+
+# ===================== Build tools =====================
+# Gradle local state and build outputs
+.gradle/
+build/
+
+# ===================== OS junk =====================
+.DS_Store
+Thumbs.db
+
+# ===================== Logs and temps =====================
+*.log
+*.tmp
+*.swp
+*.swo
+
+# ===================== Java artifacts =====================
+*.class
+hs_err_pid*
+replay_pid*.log
+jacoco.exec
+
+# ===================== Local env/config (optional) =====================
+.env
+.env.*
