@@ -2,7 +2,15 @@ package GragasApp.model;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Domain model representing a user's profile and daily logs.
+ *
+ * The canonical (stored) units are metric: height in centimeters and weight in kilograms.
+ * Convenience getters/setters are provided for imperial units (inches, pounds); conversions
+ * are handled by {Units}. This object is typically used as input to
+ * calorie calculators such as {MifflinStJeorCalculator}. Also used by CSV handler for persistence
+ *
+ */
 public class UserProfile {
 
   private String name;
@@ -14,9 +22,24 @@ public class UserProfile {
   private double targetWeightKg;   // canonical: kilograms
   private List<DailyLog> logs = new ArrayList<>();
 
+  /**
+   * Creates an empty {UserProfile}. All fields are left at their defaults and should be set
+   * via setters before use.
+   */
   public UserProfile() {
   }
 
+  /**
+   * Creates a {UserProfile} using metric units.
+   *
+   * @param name            user's display name
+   * @param age             age in years
+   * @param heightCm        height in centimeters
+   * @param activityLevel   daily activity level
+   * @param sex             biological sex (as required by BMR equations)
+   * @param weightKg        current weight in kilograms
+   * @param targetWeightKg  target (goal) weight in kilograms
+   */
   public UserProfile(String name, int age, int heightCm,
       ActivityLevel activityLevel, Sex sex,
       double weightKg, double targetWeightKg) {
@@ -28,8 +51,10 @@ public class UserProfile {
     this.weightKg = weightKg;
     this.targetWeightKg = targetWeightKg;
   }
-
-  // Factory for imperial input
+  /**
+   * Creates a {UserProfile} using  imperial units but converts to metric before storing.
+   *
+   */
   public static UserProfile fromImperial(String name, int age, int heightInches,
       ActivityLevel activityLevel, Sex sex,
       double weightLbs, double targetWeightLbs) {

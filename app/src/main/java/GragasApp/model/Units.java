@@ -1,5 +1,11 @@
 package GragasApp.model;
 
+/**
+ * Utility class for common unit conversions used in the app.
+ * 1 pound = 0.45359237 kilograms, and
+ * 1 inch = 2.54 centimeters.
+ *
+ */
 final class Units {
 
     private Units() {}

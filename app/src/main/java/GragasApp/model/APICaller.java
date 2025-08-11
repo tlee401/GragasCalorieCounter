@@ -12,10 +12,19 @@ import java.util.Properties;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+/**
+ *
+ *  Minimal HTTP client for the API Ninjas service.
+ *
+ */
 public class APICaller {
     private static final String APIKey = loadAPIKey();
     private static final String baseURL = "https://api.api-ninjas.com/v1/";
 
+    /**
+     * Loads the API key from a local {@code config.properties} file.
+     * @return the API key, or an empty string if the file cannot be read or the key is missing
+     */
     private static String loadAPIKey() {
     try (FileInputStream input = new FileInputStream("config.properties")) {
         Properties prop = new Properties();
@@ -27,6 +36,13 @@ public class APICaller {
     }
 }
 
+    /**
+     * Calls an API Ninjas endpoint with a single {@code query} parameter and returns the
+     * @param endpoint the endpoint path
+     * @param query
+     * @return the total calories summed across all array elements that contain a "calories" field
+     * @throws Exception if the HTTP response code is not 200 OK or if an I/O/JSON error occurs
+     */
     public double APICall(String endpoint, String query) throws Exception {
         String fullURL = baseURL + endpoint + "?query=" + 
                          java.net.URLEncoder.encode(query, "UTF-8");
