@@ -42,6 +42,42 @@ public class CSVHandler {
         userProfiles.add(user);
     }
 
+    public void updateUserProfileToCsv(UserProfile user) throws IOException {
+        boolean here = false;
+        for (UserProfile existingUser : userProfiles) {
+            if (existingUser.getName().equals(user.getName())) {
+                here = true;
+                break;
+            }
+        }
+        if (!here) {
+            throw new IllegalArgumentException("A user with the name '" + user.getName() + "' does not already exists.");
+        }
+
+        String fileName = user.getName() + FILE_EXTENSION;
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            // Write UserProfile header and data
+            writer.write("UserProfile,Name,Age,HeightCm,ActivityLevel,Sex,WeightKg,TargetWeightKg\n");
+            writer.write(String.format("UserProfile,%s,%d,%d,%s,%s,%.2f,%.2f\n",
+                    user.getName(), user.getAge(), user.getHeightCm(),
+                    user.getActivityLevel(), user.getSex(),
+                    user.getWeightKg(), user.getTargetWeightKg()));
+
+            // Write DailyLog entries header
+            writer.write("\nDailyLog,Date,LoggableName,Calories\n");
+
+            // Write each Loggable entry on a new line
+            for (DailyLog log : user.getLogs()) {
+                for (Loggable entry : log.getEntries()) {
+                    writer.write(String.format("DailyLog,%s,%s,%.2f\n",
+                            log.getDate().toString(),
+                            entry.getName(),
+                            entry.getCalories()));
+                }
+            }
+        }
+    }
+
     // Method to load all UserProfiles from CSV files in the current directory
     public void loadUserProfilesFromCsvs() throws IOException {
         Path currentDir = Paths.get(".");

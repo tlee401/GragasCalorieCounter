@@ -19,7 +19,6 @@ public class AppController {
 
     private final MainView view;
     private final CSVHandler csvHandler;
-    private final CalorieLookupService calorieLookupService;
     private final CalorieCalculator calorieCalculator;
 
     private UserProfile currentUser;
@@ -27,7 +26,6 @@ public class AppController {
     public AppController(MainView view, CSVHandler csvHandler) {
         this.view = view;
         this.csvHandler = csvHandler;
-        this.calorieLookupService = new CalorieLookupService();
         this.calorieCalculator = new MifflinStJeorCalculator();
 
         // Load existing profiles and populate the view
@@ -146,8 +144,7 @@ public class AppController {
 
         try {
             // Use the service to get calorie info
-            double calories = calorieLookupService.estimateCalories(foodDescription);
-            FoodEntry newFood = new FoodEntry(foodDescription, calories);
+            FoodEntry newFood = new FoodEntry(foodDescription);
 
             // Get today's log, or create it if it doesn't exist
             DailyLog todayLog = getTodaysLog();
@@ -173,10 +170,10 @@ public class AppController {
             // The CSVHandler provided only saves new users, not updates.
             // For a real app, CSVHandler would need an updateUser method.
             // We'll show a message instead.
-            view.showMessage("Save functionality requires updating the CSVHandler to handle existing files.\n" +
-                             "For now, changes are in memory and will be lost on exit unless the profile is re-created.");
+            // view.showMessage("Save functionality requires updating the CSVHandler to handle existing files.\n" +
+            //                  "For now, changes are in memory and will be lost on exit unless the profile is re-created.");
             // To implement this fully, you would call a method like:
-            // csvHandler.updateUserProfile(currentUser);
+            csvHandler.updateUserProfileToCsv(currentUser);
         } catch (Exception ex) {
             view.showError("Error saving profile: " + ex.getMessage());
         }
