@@ -20,11 +20,9 @@ public class APICaller {
     try (FileInputStream input = new FileInputStream("config.properties")) {
         Properties prop = new Properties();
         prop.load(input);
-        System.out.println(prop.getProperty("API_KEY"));
         return prop.getProperty("API_KEY");
     } catch (IOException e) {
         e.printStackTrace();
-        System.out.println("Properties Issue");
         return "";
     }
 }
