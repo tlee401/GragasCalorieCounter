@@ -1,5 +1,6 @@
 package GragasApp.view;
 import GragasApp.model.*;
+import GragasApp.controller.*;
 
 import javax.swing.*;
 import java.awt.*;
