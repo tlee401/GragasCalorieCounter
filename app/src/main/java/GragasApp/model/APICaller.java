@@ -12,7 +12,7 @@ import java.util.Properties;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public abstract class APICaller {
+public class APICaller {
     private static final String APIKey = loadAPIKey();
     private static final String baseURL = "https://api.api-ninjas.com/v1/";
 
@@ -20,9 +20,11 @@ public abstract class APICaller {
     try (FileInputStream input = new FileInputStream("config.properties")) {
         Properties prop = new Properties();
         prop.load(input);
+        System.out.println(prop.getProperty("API_KEY"));
         return prop.getProperty("API_KEY");
     } catch (IOException e) {
         e.printStackTrace();
+        System.out.println("Properties Issue");
         return "";
     }
 }
