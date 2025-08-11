@@ -68,7 +68,7 @@ public class CSVHandlerTest {
                 System.out.println("No users loaded. Test failed.");
                 return;
             }
-            UserProfile loadedUser = loadedUsers.get(0);
+            UserProfile loadedUser = loadedUsers.get(2);
             System.out.println("Loaded " + loadedUsers.size() + " user(s).");
             System.out.println("Loaded UserProfile: " + loadedUser.getName());
 
