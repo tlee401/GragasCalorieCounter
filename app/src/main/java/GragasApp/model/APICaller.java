@@ -3,6 +3,7 @@ package GragasApp.model;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -15,7 +16,7 @@ public abstract class APICaller {
         String fullURL = baseURL + endpoint + "?query=" + 
                          java.net.URLEncoder.encode(query, "UTF-8");
 
-        URL url = new URL(fullURL);
+        URL url = URI.create(fullURL).toURL();
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("X-Api-Key", APIKey);
