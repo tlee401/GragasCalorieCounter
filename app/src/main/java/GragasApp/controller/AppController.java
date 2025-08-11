@@ -4,6 +4,7 @@ import GragasApp.model.*;
 import GragasApp.view.MainView;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -56,6 +57,11 @@ public class AppController {
         view.getDashboardView().addSwitchUserListener(this::handleSwitchUser);
         view.getDashboardView().addEditWeightListener(this::handleEditWeight); // ADDED
         view.getDashboardView().addEditTargetWeightListener(this::handleEditTargetWeight); // ADDED
+        view.getDashboardView().addViewAllLogsListener(this::handleViewAllLogs); // ADDED
+
+        // All Logs View Listeners (ADDED)
+        view.getAllLogsView().addBackToDashboardListener(e -> view.showDashboard());
+        view.getAllLogsView().addDateSelectionListener(this::handleDateSelectionChange);
     }
 
     private void handleLoadProfile(ActionEvent e) {
@@ -145,6 +151,40 @@ public class AppController {
         currentUser = null;
         view.showUserSelection();
     }
+
+    /**
+     * Handles navigating to the AllLogsView.
+     */
+    private void handleViewAllLogs(ActionEvent e) {
+        if (currentUser == null) return;
+
+        // Populate the date list in the AllLogsView
+        view.getAllLogsView().populateLogDates(currentUser.getLogs());
+
+        // Clear any previously displayed log entries
+        view.getAllLogsView().updateLogEntries(null);
+        
+        // Switch to the AllLogsView
+        view.showAllLogs();
+    }
+
+    /**
+     * Handles when a user selects a date from the list in the AllLogsView.
+     */
+    private void handleDateSelectionChange(ListSelectionEvent e) {
+        // Ensure the event is processed only once
+        if (!e.getValueIsAdjusting()) {
+            LocalDate selectedDate = view.getAllLogsView().getSelectedDate();
+            if (selectedDate == null) return;
+
+            // Find the log for the selected date and update the table
+            currentUser.getLogs().stream()
+                    .filter(log -> log.getDate().equals(selectedDate))
+                    .findFirst()
+                    .ifPresent(log -> view.getAllLogsView().updateLogEntries(log));
+        }
+    }
+
 
     /**
      * Handles editing the current user's weight.

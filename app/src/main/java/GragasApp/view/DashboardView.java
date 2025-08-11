@@ -37,6 +37,7 @@ public class DashboardView extends JPanel {
     // Actions
     private final JButton saveChangesButton;
     private final JButton switchUserButton;
+    private final JButton viewAllLogsButton; // ADDED
 
     public DashboardView() {
         setLayout(new BorderLayout(10, 10));
@@ -137,6 +138,8 @@ public class DashboardView extends JPanel {
         JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         saveChangesButton = new JButton("Save Changes");
         switchUserButton = new JButton("Switch User");
+        viewAllLogsButton = new JButton("View All Logs"); // ADDED
+        actionPanel.add(viewAllLogsButton); // ADDED
         actionPanel.add(saveChangesButton);
         actionPanel.add(switchUserButton);
         add(actionPanel, BorderLayout.SOUTH);
@@ -189,6 +192,11 @@ public class DashboardView extends JPanel {
 
     public void addSaveChangesListener(ActionListener listener) {
         saveChangesButton.addActionListener(listener);
+    }
+
+    // ADDED listener for the new button
+    public void addViewAllLogsListener(ActionListener listener) {
+        viewAllLogsButton.addActionListener(listener);
     }
     
     public void addSwitchUserListener(ActionListener listener) {

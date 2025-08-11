@@ -13,10 +13,13 @@ public class MainView extends JFrame {
     private final JPanel mainPanel;
     private final UserSelectionView userSelectionView;
     private final DashboardView dashboardView;
+    private final AllLogsView allLogsView; // ADDED
+
 
     // Panel names for CardLayout
     private static final String USER_SELECTION_PANEL = "UserSelectionPanel";
     private static final String DASHBOARD_PANEL = "DashboardPanel";
+    private static final String ALL_LOGS_PANEL = "AllLogsPanel"; // ADDED
 
     public MainView() {
         setTitle("Gragas Calorie Counter");
@@ -30,10 +33,12 @@ public class MainView extends JFrame {
         // Initialize panels
         userSelectionView = new UserSelectionView();
         dashboardView = new DashboardView();
+        allLogsView = new AllLogsView(); // ADDED
 
         // Add panels to the main panel with names
         mainPanel.add(userSelectionView, USER_SELECTION_PANEL);
         mainPanel.add(dashboardView, DASHBOARD_PANEL);
+        mainPanel.add(allLogsView, ALL_LOGS_PANEL); // ADDED
 
         // Add the main panel to the frame
         add(mainPanel);
@@ -48,6 +53,10 @@ public class MainView extends JFrame {
         return dashboardView;
     }
 
+    public AllLogsView getAllLogsView() {
+        return allLogsView;
+    }
+
     // Methods to switch between panels
     public void showUserSelection() {
         cardLayout.show(mainPanel, USER_SELECTION_PANEL);
@@ -55,6 +64,10 @@ public class MainView extends JFrame {
 
     public void showDashboard() {
         cardLayout.show(mainPanel, DASHBOARD_PANEL);
+    }
+
+    public void showAllLogs() {
+        cardLayout.show(mainPanel, ALL_LOGS_PANEL);
     }
 
     // Convenience methods for showing dialogs
