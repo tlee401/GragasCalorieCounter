@@ -57,7 +57,7 @@ public class AppController {
         view.getDashboardView().addViewAllLogsListener(this::handleViewAllLogs); // ADDED
 
         // All Logs View Listeners (ADDED)
-        view.getAllLogsView().addBackToDashboardListener(e -> view.showDashboard());
+        view.getAllLogsView().addBackToDashboardListener(_ -> view.showDashboard());
         view.getAllLogsView().addDateSelectionListener(this::handleDateSelectionChange);
     }
 

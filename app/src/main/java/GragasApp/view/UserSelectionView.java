@@ -84,7 +84,7 @@ public class UserSelectionView extends JPanel {
         weightLabel = new JLabel("Weight (kg):");
         targetWeightLabel = new JLabel("Target Weight (kg):");
 
-        unitToggle.addActionListener(e -> updateUnitLabels());
+        unitToggle.addActionListener(_ -> updateUnitLabels());
 
         int y = 0;
         newUserGbc.gridx = 0;
