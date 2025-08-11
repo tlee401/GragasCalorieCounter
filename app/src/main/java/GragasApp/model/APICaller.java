@@ -6,13 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public abstract class APICaller {
-    protected String APIKey;
-    protected String baseURL;
-
-    public APICaller(String APIKey, String baseURL) {
-        this.APIKey = APIKey;
-        this.baseURL = baseURL;
-    }
+    private static final String APIKey = "Not_Actual_Key_Nice_Try";
+    private static final String baseURL = "https://api.api-ninjas.com/v1/";
 
     public double APICall(String endpoint, String query) throws Exception {
         String fullURL = baseURL + endpoint + "?query=" + 
@@ -62,3 +57,4 @@ public abstract class APICaller {
         }
     }
 }
+
