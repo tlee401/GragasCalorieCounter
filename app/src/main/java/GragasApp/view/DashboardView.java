@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 /**
  * The main dashboard view. Displays user info, calorie summary, and the daily food log.
+ * (MODIFIED to include target weight and edit buttons)
  */
 public class DashboardView extends JPanel {
 
@@ -16,6 +17,11 @@ public class DashboardView extends JPanel {
     private final JLabel ageLabel = new JLabel();
     private final JLabel weightLabel = new JLabel();
     private final JLabel heightLabel = new JLabel();
+    private final JLabel targetWeightLabel = new JLabel(); // ADDED
+
+    // Edit Buttons for Profile
+    private final JButton editWeightButton; // ADDED
+    private final JButton editTargetWeightButton; // ADDED
 
     // Calorie Summary
     private final JLabel tdeeLabel = new JLabel();
@@ -39,17 +45,54 @@ public class DashboardView extends JPanel {
         // --- Top Panel (Profile Info & Calorie Summary) ---
         JPanel topPanel = new JPanel(new GridLayout(1, 2, 10, 0));
         
-        // Profile Info Panel
-        JPanel profilePanel = new JPanel(new GridLayout(4, 2, 5, 5));
+        // Profile Info Panel (Updated to GridBagLayout)
+        JPanel profilePanel = new JPanel(new GridBagLayout());
         profilePanel.setBorder(BorderFactory.createTitledBorder("User Profile"));
-        profilePanel.add(new JLabel("Name:"));
-        profilePanel.add(nameLabel);
-        profilePanel.add(new JLabel("Age:"));
-        profilePanel.add(ageLabel);
-        profilePanel.add(new JLabel("Weight:"));
-        profilePanel.add(weightLabel);
-        profilePanel.add(new JLabel("Height:"));
-        profilePanel.add(heightLabel);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(2, 5, 2, 5);
+        gbc.anchor = GridBagConstraints.WEST;
+
+        // Initialize edit buttons
+        editWeightButton = new JButton("Edit");
+        editTargetWeightButton = new JButton("Edit");
+        editWeightButton.setMargin(new Insets(2, 5, 2, 5));
+        editTargetWeightButton.setMargin(new Insets(2, 5, 2, 5));
+
+        // Row 0: Name
+        gbc.gridx = 0; gbc.gridy = 0;
+        profilePanel.add(new JLabel("Name:"), gbc);
+        gbc.gridx = 1; gbc.weightx = 1; gbc.fill = GridBagConstraints.HORIZONTAL;
+        profilePanel.add(nameLabel, gbc);
+
+        // Row 1: Age
+        gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = 0; gbc.fill = GridBagConstraints.NONE;
+        profilePanel.add(new JLabel("Age:"), gbc);
+        gbc.gridx = 1;
+        profilePanel.add(ageLabel, gbc);
+
+        // Row 2: Height
+        gbc.gridx = 0; gbc.gridy = 2;
+        profilePanel.add(new JLabel("Height:"), gbc);
+        gbc.gridx = 1;
+        profilePanel.add(heightLabel, gbc);
+
+        // Row 3: Weight
+        gbc.gridx = 0; gbc.gridy = 3;
+        profilePanel.add(new JLabel("Weight:"), gbc);
+        gbc.gridx = 1;
+        profilePanel.add(weightLabel, gbc);
+        gbc.gridx = 2; gbc.anchor = GridBagConstraints.EAST;
+        profilePanel.add(editWeightButton, gbc);
+        gbc.anchor = GridBagConstraints.WEST; // Reset anchor
+
+        // Row 4: Target Weight
+        gbc.gridx = 0; gbc.gridy = 4;
+        profilePanel.add(new JLabel("Target Weight:"), gbc);
+        gbc.gridx = 1;
+        profilePanel.add(targetWeightLabel, gbc);
+        gbc.gridx = 2; gbc.anchor = GridBagConstraints.EAST;
+        profilePanel.add(editTargetWeightButton, gbc);
+
         topPanel.add(profilePanel);
 
         // Calorie Summary Panel
@@ -69,19 +112,17 @@ public class DashboardView extends JPanel {
         JPanel logPanel = new JPanel(new BorderLayout(5, 5));
         logPanel.setBorder(BorderFactory.createTitledBorder("Today's Food Log"));
 
-        // Table
         String[] columnNames = {"Food", "Calories"};
         foodLogTableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Make table cells not editable
+                return false;
             }
         };
         foodLogTable = new JTable(foodLogTableModel);
         JScrollPane scrollPane = new JScrollPane(foodLogTable);
         logPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Input area
         JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         foodInput = new JTextField(25);
         addFoodButton = new JButton("Add Food");
@@ -101,33 +142,31 @@ public class DashboardView extends JPanel {
         add(actionPanel, BorderLayout.SOUTH);
     }
     
-    // --- Public methods for Controller interaction ---
-
-    public void setProfileInfo(String name, String age, String weight, String height) {
+    public void setProfileInfo(String name, String age, String weight, String height, String targetWeight) {
         nameLabel.setText(name);
         ageLabel.setText(age);
         weightLabel.setText(weight);
         heightLabel.setText(height);
+        targetWeightLabel.setText(targetWeight); // ADDED
     }
 
     public void setCalorieSummary(String tdee, String consumed, String remaining) {
         tdeeLabel.setText(tdee + " kcal");
         consumedLabel.setText(consumed + " kcal");
         
-        // Change color based on remaining calories
         double rem = Double.parseDouble(remaining);
         String remText = String.format("%.0f kcal", rem);
         remainingLabel.setText(remText);
         if (rem < 0) {
             remainingLabel.setForeground(Color.RED);
         } else {
-            remainingLabel.setForeground(Color.GREEN);
+            remainingLabel.setForeground(new Color(0, 153, 0)); // Darker green
         }
     }
     
     public String getFoodInput() {
         String input = foodInput.getText();
-        foodInput.setText(""); // Clear input field after getting value
+        foodInput.setText("");
         return input;
     }
 
@@ -137,6 +176,15 @@ public class DashboardView extends JPanel {
     
     public void addAddFoodListener(ActionListener listener) {
         addFoodButton.addActionListener(listener);
+    }
+    
+    // ADDED listeners for new buttons
+    public void addEditWeightListener(ActionListener listener) {
+        editWeightButton.addActionListener(listener);
+    }
+
+    public void addEditTargetWeightListener(ActionListener listener) {
+        editTargetWeightButton.addActionListener(listener);
     }
 
     public void addSaveChangesListener(ActionListener listener) {

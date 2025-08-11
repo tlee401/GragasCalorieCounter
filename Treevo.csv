@@ -1,5 +1,5 @@
 UserProfile,Name,Age,HeightCm,ActivityLevel,Sex,WeightKg,TargetWeightKg
-UserProfile,Treevo,23,561,SEDENTARY,MALE,100.00,90.00
+UserProfile,Treevo,23,561,SEDENTARY,MALE,90.00,100.00
 
 DailyLog,Date,LoggableName,Calories
 DailyLog,2025-08-11,chimken sandwich,269.50
