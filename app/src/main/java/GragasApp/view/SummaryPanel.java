@@ -18,7 +18,7 @@ public class SummaryPanel extends JPanel {
     add(poundsToGoal);
   }
 
-  // Call these from controller after model updates TO-DO
+  // TODO Call these from controller after model updates
   public void setTotalCaloriesToday(int cals) {
     totalCaloriesToday.setText(String.valueOf(cals));
   }

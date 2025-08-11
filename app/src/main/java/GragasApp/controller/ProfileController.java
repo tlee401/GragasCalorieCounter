@@ -1,6 +1,6 @@
 package GragasApp.controller;
 import GragasApp.model.*;
-import GragasApp.view.*;
+import java.util.List;
 
 public interface ProfileController {
   void createProfile(String name,
@@ -12,4 +12,8 @@ public interface ProfileController {
       ActivityLevel activity);
   void loadProfile(String profileId); // wire however you like later
   void saveCurrentProfile();
+
+  // New for login
+  List<UserProfile> listOfProfiles();        // unique names
+  void selectProfileByName(String name);  // set current user in the model
 }

@@ -48,7 +48,7 @@ public class LogPanel extends JPanel {
       }
       addFood.setEnabled(false);
 
-      // TO-DO change when I have a better Idea of how the API call works
+      // TODO change when I have a better Idea of how the API call works
       // Background API call to keep UI responsive
       SwingWorker<Integer, Void> worker = new SwingWorker<>() {
         @Override

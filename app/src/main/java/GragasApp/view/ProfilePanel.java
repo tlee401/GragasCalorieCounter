@@ -78,4 +78,11 @@ public class ProfilePanel extends JPanel {
       c.gridx = 1; c.gridy = row; c.weightx = 1; add(field, c);
       c.weightx = 0;
     }
+
+  public void setNameText(String value) {
+    this.name.setText(value == null ? "" : value);
+  }
+  public void focusNameField() {
+    this.name.requestFocusInWindow();
+  }
 }
