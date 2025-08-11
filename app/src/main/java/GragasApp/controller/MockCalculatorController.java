@@ -6,7 +6,7 @@ package GragasApp.controller;
  * Mock CalculatorController for testing the GUI.
  * Provides placeholder calculations.
  */
-public class MockCalculatorController implements CalculatorController {
+public class MockCalculatorController {
 
     public CalcResult calculateBmrAndTdee() {
         System.out.println("Mock: Calculating BMR and TDEE.");

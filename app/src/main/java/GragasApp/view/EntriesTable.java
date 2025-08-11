@@ -4,10 +4,11 @@ import GragasApp.model.*;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
+import java.util.Collections;
 
 public class EntriesTable extends AbstractTableModel {
   private final String[] cols = {"Name", "Calories"};
-  private List<? extends Loggable> data;
+  private List<? extends Loggable> data = Collections.emptyList();
 
   public EntriesTable(List<? extends Loggable> data) {
     this.data = data;

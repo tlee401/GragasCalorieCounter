@@ -9,70 +9,85 @@ import javax.swing.JTabbedPane;
 
 
 public class MainFrame extends JFrame {
-  // Root cards
   private final CardLayout rootCards = new CardLayout();
   private final JPanel root = new JPanel(rootCards);
-
   private final JTabbedPane tabs = new JTabbedPane();
+  private final LoginPanel loginView;
   private final ProfilePanel profileView;
-  private final CalculatorPanel calculatorView;
+  private final HomePagePanel homeView;
   private final LogPanel logView;
-  private final SummaryPanel summaryView;
-
-  public MainFrame(ProfileController profileController,
-      CalculatorController calculatorController,
-      LogController logController,
-      CalorieLookupService calorieLookupService) {
+  private final LogHistoryPanel historyView;
+  private final CalculatorPanel calculatorView;
+  private UserProfileManager userProfileManager;
+  
+  public MainFrame(UserProfileManager userProfileManager,
+                   LogController logController,
+                   CalorieLookupService calorieLookupService) {
     super("Gragas Calorie Counter");
+    this.userProfileManager = userProfileManager;
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     setSize(900, 600);
     setLocationRelativeTo(null);
 
     // Build the login card
-    LoginPanel login = new LoginPanel(profileController, new LoginPanel.Listener() {
-      @Override
-      public void onOpenExisting(String name) {
-        // Load model, then show tabs at Log
-        profileController.selectProfileByName(name);
-        showApp();
-        tabs.setSelectedComponent(logView);
-      }
-      @Override
-      public void onCreateNew() {
-        // Show tabs at Profile, empty fields ready for creation
-        showApp();
-        tabs.setSelectedComponent(profileView);
-        profileView.setNameText("");
-        profileView.focusNameField();
-      }
+    loginView = new LoginPanel(userProfileManager, new LoginPanel.Listener() {
+        @Override
+        public void onOpenExisting(String name) {
+            userProfileManager.selectProfileByName(name);
+            showApp();
+        }
+        @Override
+        public void onCreateNew() {
+            showProfileCreate();
+        }
     });
-
+    
+    // Create controllers needed for views
+    ProfileController profileController = new ProfileController(userProfileManager);
+    CalculatorController calculatorController = new CalculatorController(userProfileManager);
+    HistoryController historyController = new HistoryController(userProfileManager.getCurrentUserProfile());
+    
     // Panels
-    profileView = new ProfilePanel(profileController);
-    calculatorView = new CalculatorPanel(calculatorController);
+    profileView = new ProfilePanel(profileController, e -> showLogin());
     logView = new LogPanel(logController, calorieLookupService);
-    summaryView = new SummaryPanel();
+    historyView = new LogHistoryPanel(historyController);
+    calculatorView = new CalculatorPanel(calculatorController);
+    homeView = new HomePagePanel(userProfileManager, e -> showLogin());
 
+    tabs.addTab("Home", homeView);
+    tabs.addTab("Log", logView);
+    tabs.addTab("History", historyView);
     tabs.addTab("Profile", profileView);
     tabs.addTab("Calculator", calculatorView);
-    tabs.addTab("Log", logView);
-    tabs.addTab("Summary", summaryView);
 
     // Add cards to the root panel
-    root.add(login, "LOGIN");
+    root.add(loginView, "LOGIN");
+    root.add(profileView, "PROFILE_CREATE");
     root.add(tabs,  "APP");
-
-    // Add the root panel to the MainFrame's content pane
+    
     getContentPane().add(root, BorderLayout.CENTER);
     showLogin();
   }
 
   public void showLogin() {
+    userProfileManager.logout();
+    loginView.refreshProfileList();
     rootCards.show(root, "LOGIN");
   }
 
   public void showApp() {
+    // Refresh all panels with the new user's data
+    homeView.updateWelcomeMessage(userProfileManager.getCurrentUserProfile().getName());
+    logView.refreshEntries();
+    historyView.refresh();
+    
     rootCards.show(root, "APP");
+    tabs.setSelectedComponent(homeView);
+  }
+  
+  public void showProfileCreate() {
+      profileView.clearFieldsForNewProfile();
+      rootCards.show(root, "PROFILE_CREATE");
   }
 }
 

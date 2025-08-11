@@ -12,14 +12,17 @@ public class LogPanel extends JPanel {
   private final JTextArea freeText = new JTextArea(4, 40);
   private final JButton addFood = new JButton("Add Food");
   private final JButton removeSelected = new JButton("Remove Selected");
+  private final JLabel totalCaloriesLabel = new JLabel("Total Calories Today: 0");
 
   private final JTable table;
   private final EntriesTable tableModel;
-
-  // In a real app, the controller would refresh this from the model
-  private final List<Loggable> entries = LogController.getEntries();
+  private final LogController controller;
+  private final CalorieLookupService lookup;
+  private final List<Loggable> entries = new ArrayList<>();
 
   public LogPanel(LogController controller, CalorieLookupService lookup) {
+    this.controller = controller;
+    this.lookup = lookup;
     setLayout(new BorderLayout(8, 8));
 
     // Top: free text input and buttons
@@ -38,52 +41,61 @@ public class LogPanel extends JPanel {
     tableModel = new EntriesTable(entries);
     table = new JTable(tableModel);
     add(new JScrollPane(table), BorderLayout.CENTER);
+    
+    // Bottom: Total calories display
+    JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+    bottomPanel.add(totalCaloriesLabel);
+    add(bottomPanel, BorderLayout.SOUTH);
 
-    // Actions
+
     addFood.addActionListener(e -> {
       String desc = freeText.getText().trim();
       if (desc.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Please enter a food description.");
+        JOptionPane.showMessageDialog(this, "Please enter a food description.", "Input Error", JOptionPane.WARNING_MESSAGE);
         return;
       }
       addFood.setEnabled(false);
+      removeSelected.setEnabled(false);
 
-      // TODO change when I have a better Idea of how the API call works
-      // Background API call to keep UI responsive
-      // SwingWorker<Integer, Void> worker = new SwingWorker<>() {
-      //   @Override
-      //   protected Integer doInBackground() throws Exception {
-      //     return lookup.estimateCalories(desc);
-      //   }
-      //   @Override
-      //   protected void done() {
-      //     addFood.setEnabled(true);
-      //     try {
-      //       int calories = get();
-      //       FoodEntry entry = new FoodEntry(desc, calories);
-      //       controller.addFood(entry, LocalDate.now());
-      //       // For demo, update local list. In production, controller should refresh from model.
-      //       entries.add(entry);
-      //       tableModel.fireTableDataChanged();
-      //       freeText.setText("");
-      //     } catch (Exception ex) {
-      //       JOptionPane.showMessageDialog(LogPanel.this,
-      //           "Could not estimate calories: " + ex.getMessage(),
-      //           "Lookup error",
-      //           JOptionPane.ERROR_MESSAGE);
-      //     }
-      //   }
-      // };
-      // worker.execute();
+      SwingWorker<Void, Void> worker = new SwingWorker<>() {
+        @Override
+        protected Void doInBackground() throws Exception {
+          controller.addFood(desc);
+          return null;
+        }
+        @Override
+        protected void done() {
+          addFood.setEnabled(true);
+          removeSelected.setEnabled(true);
+          try {
+            get();
+            refreshEntries();
+            freeText.setText("");
+          } catch (Exception ex) {
+            JOptionPane.showMessageDialog(LogPanel.this,
+                "Could not estimate calories: " + ex.getMessage(),
+                "Lookup error",
+                JOptionPane.ERROR_MESSAGE);
+          }
+        }
+      };
+      worker.execute();
     });
 
     removeSelected.addActionListener(e -> {
       int row = table.getSelectedRow();
       if (row < 0) return;
       Loggable entry = entries.get(row);
-      controller.removeFood((FoodEntry) entry, LocalDate.now());
-      entries.remove(row);
-      tableModel.fireTableRowsDeleted(row, row);
+      controller.removeFood(entry, LocalDate.now());
+      refreshEntries();
     });
+  }
+  
+  public void refreshEntries() {
+      List<Loggable> newEntries = controller.getEntries(LocalDate.now());
+      entries.clear();
+      entries.addAll(newEntries);
+      tableModel.setData(entries);
+      totalCaloriesLabel.setText("Total Calories Today: " + controller.getTotalCaloriesForToday());
   }
 }

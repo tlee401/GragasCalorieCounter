@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Mock LogController for testing the GUI.
  * Provides a simple list of entries.
  */
-public class MockLogController implements LogController {
+public class MockLogController {
 
     private final List<Loggable> mockEntries = new ArrayList<>();
 

@@ -8,7 +8,7 @@ import java.util.List;
  * This class provides a simple list of profile names and a placeholder
  * for a selected profile.
  */
-public class MockProfileController implements ProfileController {
+public class MockProfileController{
 
     private final List<UserProfile> mockProfiles = new ArrayList<>();
     private UserProfile currentProfile;

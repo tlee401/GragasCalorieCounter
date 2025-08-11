@@ -1,11 +1,10 @@
 package GragasApp.view;
 import GragasApp.controller.*;
-import GragasApp.model.UserProfile;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 public class LoginPanel extends JPanel {
 
@@ -17,27 +16,23 @@ public class LoginPanel extends JPanel {
   private final JComboBox<String> names;
   private final JButton open = new JButton("Open");
   private final JButton create = new JButton("Create new profile");
+  private final UserProfileManager userProfileManager;
 
-  public LoginPanel(ProfileController controller, Listener listener) {
+  public LoginPanel(UserProfileManager userProfileManager, Listener listener) {
+    this.userProfileManager = userProfileManager;
     setLayout(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
     c.insets = new Insets(8, 8, 8, 8);
     c.fill = GridBagConstraints.HORIZONTAL;
     c.weightx = 1;
 
-    JLabel title = new JLabel("Select your profile");
+    JLabel title = new JLabel("Select your profile", SwingConstants.CENTER);
     title.setFont(title.getFont().deriveFont(Font.BOLD, 16f));
     c.gridx = 0; c.gridy = 0; c.gridwidth = 2;
     add(title, c);
 
-    //TODO add logic to get only the profile names from the user
-    List<UserProfile> profiles = controller.listOfProfiles();
-    List<String> profileNames = new ArrayList<>();
-    for (UserProfile user : profiles) {
-      profileNames.add(user.getName());
-
-    }
-    names = new JComboBox<>(profileNames.toArray(new String[0]));
+    List<String> profileNames = userProfileManager.getProfileNames();
+    names = new JComboBox<>(new Vector<>(profileNames));
     names.setEditable(false);
 
     c.gridy = 1; c.gridwidth = 2;
@@ -52,17 +47,19 @@ public class LoginPanel extends JPanel {
 
     open.addActionListener(e -> {
       String selected = (String) names.getSelectedItem();
-      if (selected == null || selected.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Please choose a profile name.");
-        return;
+      if (selected != null && !selected.isEmpty()) {
+        listener.onOpenExisting(selected);
+      } else {
+        JOptionPane.showMessageDialog(this, "Please select a profile or create a new one.", "No Profile Selected", JOptionPane.WARNING_MESSAGE);
       }
-      listener.onOpenExisting(selected);
     });
-
+    
     create.addActionListener(e -> listener.onCreateNew());
+  }
 
-    // If there are no profiles yet, disable Open
-    open.setEnabled(!profileNames.isEmpty());
+  public void refreshProfileList() {
+    names.removeAllItems();
+    userProfileManager.getProfileNames().forEach(names::addItem);
   }
 }
 

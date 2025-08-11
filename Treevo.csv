@@ -1,0 +1,4 @@
+UserProfile,Name,Age,HeightCm,ActivityLevel,Sex,WeightKg,TargetWeightKg
+UserProfile,Treevo,23,561,SEDENTARY,MALE,100.00,90.00
+
+DailyLog,Date,LoggableName,Calories
