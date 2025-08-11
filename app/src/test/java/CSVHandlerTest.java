@@ -47,7 +47,7 @@ public class CSVHandlerTest {
         // --- 2. Test saving and loading with CSVHandler ---
         CSVHandler csvHandler = new CSVHandler();
         String fileName = user1.getName() + ".csv";
-        File testFile = new File(fileName);
+        // File testFile = new File(fileName);
 
         try {
             // Save the user profile to a CSV file
@@ -117,6 +117,7 @@ public class CSVHandlerTest {
             System.err.println("An error occurred during file operations: " + e.getMessage());
             e.printStackTrace();
         } finally {
+            System.out.println("\nCleaned up test file: " + fileName);
             // Clean up: delete the created file
             // if (testFile.exists()) {
             //     if (testFile.delete()) {
