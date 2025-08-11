@@ -50,31 +50,31 @@ public class LogPanel extends JPanel {
 
       // TODO change when I have a better Idea of how the API call works
       // Background API call to keep UI responsive
-      SwingWorker<Integer, Void> worker = new SwingWorker<>() {
-        @Override
-        protected Integer doInBackground() throws Exception {
-          return lookup.estimateCalories(desc);
-        }
-        @Override
-        protected void done() {
-          addFood.setEnabled(true);
-          try {
-            int calories = get();
-            FoodEntry entry = new FoodEntry(desc, calories);
-            controller.addFood(entry, LocalDate.now());
-            // For demo, update local list. In production, controller should refresh from model.
-            entries.add(entry);
-            tableModel.fireTableDataChanged();
-            freeText.setText("");
-          } catch (Exception ex) {
-            JOptionPane.showMessageDialog(LogPanel.this,
-                "Could not estimate calories: " + ex.getMessage(),
-                "Lookup error",
-                JOptionPane.ERROR_MESSAGE);
-          }
-        }
-      };
-      worker.execute();
+      // SwingWorker<Integer, Void> worker = new SwingWorker<>() {
+      //   @Override
+      //   protected Integer doInBackground() throws Exception {
+      //     return lookup.estimateCalories(desc);
+      //   }
+      //   @Override
+      //   protected void done() {
+      //     addFood.setEnabled(true);
+      //     try {
+      //       int calories = get();
+      //       FoodEntry entry = new FoodEntry(desc, calories);
+      //       controller.addFood(entry, LocalDate.now());
+      //       // For demo, update local list. In production, controller should refresh from model.
+      //       entries.add(entry);
+      //       tableModel.fireTableDataChanged();
+      //       freeText.setText("");
+      //     } catch (Exception ex) {
+      //       JOptionPane.showMessageDialog(LogPanel.this,
+      //           "Could not estimate calories: " + ex.getMessage(),
+      //           "Lookup error",
+      //           JOptionPane.ERROR_MESSAGE);
+      //     }
+      //   }
+      // };
+      // worker.execute();
     });
 
     removeSelected.addActionListener(e -> {

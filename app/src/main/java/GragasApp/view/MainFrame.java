@@ -58,15 +58,21 @@ public class MainFrame extends JFrame {
     tabs.addTab("Log", logView);
     tabs.addTab("Summary", summaryView);
 
-    // Add cards
+    // Add cards to the root panel
     root.add(login, "LOGIN");
     root.add(tabs,  "APP");
 
-    getContentPane().add(tabs, BorderLayout.CENTER);
-    rootCards.show(root, "LOGIN"); // start at login
+    // Add the root panel to the MainFrame's content pane
+    getContentPane().add(root, BorderLayout.CENTER);
+    showLogin();
   }
 
-  private void showApp() {
+  public void showLogin() {
+    rootCards.show(root, "LOGIN");
+  }
+
+  public void showApp() {
     rootCards.show(root, "APP");
   }
 }
+

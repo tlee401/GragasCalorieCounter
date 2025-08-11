@@ -1,8 +1,10 @@
 package GragasApp.view;
 import GragasApp.controller.*;
+import GragasApp.model.UserProfile;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LoginPanel extends JPanel {
@@ -29,7 +31,12 @@ public class LoginPanel extends JPanel {
     add(title, c);
 
     //TODO add logic to get only the profile names from the user
-    List<String> profileNames = controller.listOfProfiles();
+    List<UserProfile> profiles = controller.listOfProfiles();
+    List<String> profileNames = new ArrayList<>();
+    for (UserProfile user : profiles) {
+      profileNames.add(user.getName());
+
+    }
     names = new JComboBox<>(profileNames.toArray(new String[0]));
     names.setEditable(false);
 
