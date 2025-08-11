@@ -1,8 +1,13 @@
 UserProfile,Name,Age,HeightCm,ActivityLevel,Sex,WeightKg,TargetWeightKg
-UserProfile,TestUser,30,178,MODERATE,MALE,81.65,79.38
+UserProfile,TestUser,30,178,MODERATE,MALE,100.00,200.00
 
 DailyLog,Date,LoggableName,Calories
-DailyLog,2025-08-11,Oatmeal,69.60
-DailyLog,2025-08-11,Coffee,1.00
-DailyLog,2025-08-10,Chicken Salad,231.40
-DailyLog,2025-08-10,Apple,53.00
+DailyLog,2025-08-11,oatmeal,69.60
+DailyLog,2025-08-11,coffee,1.00
+DailyLog,2025-08-11,teriakyi,0.00
+DailyLog,2025-08-11,hotdog,325.40
+DailyLog,2025-08-11,cake,393.60
+DailyLog,2025-08-11,two slices of pizza,562.60
+DailyLog,2025-08-11,coffee,1.00
+DailyLog,2025-08-10,chicken salad,231.40
+DailyLog,2025-08-10,apple,53.00

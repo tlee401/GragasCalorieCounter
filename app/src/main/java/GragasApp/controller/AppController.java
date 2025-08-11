@@ -20,7 +20,6 @@ public class AppController {
 
     private final MainView view;
     private final CSVHandler csvHandler;
-    private final CalorieLookupService calorieLookupService;
     private final CalorieCalculator calorieCalculator;
 
     private UserProfile currentUser;
@@ -28,7 +27,6 @@ public class AppController {
     public AppController(MainView view, CSVHandler csvHandler) {
         this.view = view;
         this.csvHandler = csvHandler;
-        this.calorieLookupService = new CalorieLookupService();
         this.calorieCalculator = new MifflinStJeorCalculator();
 
         loadInitialData();
@@ -122,8 +120,7 @@ public class AppController {
             return;
         }
         try {
-            double calories = calorieLookupService.estimateCalories(foodDescription);
-            FoodEntry newFood = new FoodEntry(foodDescription, calories);
+            FoodEntry newFood = new FoodEntry(foodDescription);
             DailyLog todayLog = getTodaysLog();
             todayLog.addEntry(newFood);
             updateFoodLogTable(todayLog);
