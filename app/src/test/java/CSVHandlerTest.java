@@ -1,5 +1,4 @@
 import GragasApp.model.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -22,13 +21,24 @@ public class CSVHandlerTest {
 
         // Add some daily logs with food entries
         DailyLog log1 = new DailyLog(LocalDate.now());
-        log1.addEntry(new FoodEntry("Oatmeal", 300));
-        log1.addEntry(new FoodEntry("Coffee", 10));
+        
+        try {
+            log1.addEntry(new FoodEntry("Oatmeal"));
+            log1.addEntry(new FoodEntry("Coffee"));
+        } catch (Exception e) {
+            System.err.println("Failed to create FoodEntry for log1: " + e.getMessage());
+            e.printStackTrace();
+        }
         user1.addLog(log1);
 
         DailyLog log2 = new DailyLog(LocalDate.now().minusDays(1));
-        log2.addEntry(new FoodEntry("Chicken Salad", 450));
-        log2.addEntry(new FoodEntry("Apple", 95));
+        try {
+            log2.addEntry(new FoodEntry("Chicken Salad"));
+            log2.addEntry(new FoodEntry("Apple"));
+        } catch (Exception e) {
+            System.err.println("Failed to create FoodEntry for log2: " + e.getMessage());
+            e.printStackTrace();
+        }
         user1.addLog(log2);
 
         System.out.println("Original UserProfile created: " + user1.getName());
@@ -107,7 +117,6 @@ public class CSVHandlerTest {
             System.err.println("An error occurred during file operations: " + e.getMessage());
             e.printStackTrace();
         } finally {
-            System.err.println("\nFailed to delete the test file: " + fileName);
             // Clean up: delete the created file
             // if (testFile.exists()) {
             //     if (testFile.delete()) {
@@ -119,4 +128,5 @@ public class CSVHandlerTest {
         }
     }
 }
+
 
