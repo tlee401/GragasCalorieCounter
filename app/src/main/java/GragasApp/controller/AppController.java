@@ -14,7 +14,6 @@ import java.util.Optional;
 
 /**
  * The main controller for the application.
- * (MODIFIED to handle weight/target weight editing and saving)
  */
 public class AppController {
 
@@ -84,7 +83,7 @@ public class AppController {
         try {
             String name = view.getUserSelectionView().getNewUserName();
             int age = view.getUserSelectionView().getAge();
-            double height = view.getUserSelectionView().getHeight();
+            double height = view.getUserSelectionView().getUserHeight();
             double weight = view.getUserSelectionView().getWeight();
             double targetWeight = view.getUserSelectionView().getTargetWeight();
             Sex sex = view.getUserSelectionView().getSex();
@@ -185,7 +184,6 @@ public class AppController {
 
     /**
      * Handles editing the current user's weight.
-     * (NEW METHOD)
      */
     private void handleEditWeight(ActionEvent e) {
         if (currentUser == null) return;
@@ -209,7 +207,6 @@ public class AppController {
     
     /**
      * Handles editing the current user's target weight.
-     * (NEW METHOD)
      */
     private void handleEditTargetWeight(ActionEvent e) {
         if (currentUser == null) return;
@@ -233,7 +230,6 @@ public class AppController {
 
     /**
      * Populates the dashboard view with the current user's data.
-     * (MODIFIED to pass target weight)
      */
     private void updateDashboard() {
         if (currentUser == null) return;

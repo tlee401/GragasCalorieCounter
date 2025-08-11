@@ -13,13 +13,13 @@ public class MainView extends JFrame {
     private final JPanel mainPanel;
     private final UserSelectionView userSelectionView;
     private final DashboardView dashboardView;
-    private final AllLogsView allLogsView; // ADDED
+    private final AllLogsView allLogsView; 
 
 
     // Panel names for CardLayout
     private static final String USER_SELECTION_PANEL = "UserSelectionPanel";
     private static final String DASHBOARD_PANEL = "DashboardPanel";
-    private static final String ALL_LOGS_PANEL = "AllLogsPanel"; // ADDED
+    private static final String ALL_LOGS_PANEL = "AllLogsPanel"; 
 
     public MainView() {
         setTitle("Gragas Calorie Counter");
@@ -33,12 +33,12 @@ public class MainView extends JFrame {
         // Initialize panels
         userSelectionView = new UserSelectionView();
         dashboardView = new DashboardView();
-        allLogsView = new AllLogsView(); // ADDED
+        allLogsView = new AllLogsView(); 
 
         // Add panels to the main panel with names
         mainPanel.add(userSelectionView, USER_SELECTION_PANEL);
         mainPanel.add(dashboardView, DASHBOARD_PANEL);
-        mainPanel.add(allLogsView, ALL_LOGS_PANEL); // ADDED
+        mainPanel.add(allLogsView, ALL_LOGS_PANEL); 
 
         // Add the main panel to the frame
         add(mainPanel);

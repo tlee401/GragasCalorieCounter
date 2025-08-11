@@ -79,7 +79,7 @@ public class UserSelectionView extends JPanel {
         createProfileButton = new JButton("Create Profile");
 
         // Unit selection
-        unitToggle = new JToggleButton("Use Imperial (lbs, in)");
+        unitToggle = new JToggleButton("Change units");
         heightLabel = new JLabel("Height (cm):");
         weightLabel = new JLabel("Weight (kg):");
         targetWeightLabel = new JLabel("Target Weight (kg):");
