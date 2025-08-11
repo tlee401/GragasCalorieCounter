@@ -1,25 +1,25 @@
-public class ExerciseEntry extends APICaller implements Loggable {
+public class FoodEntry extends APICaller implements Loggable {
     private double Calorie;
     private String Name;
 
-    public ExerciseEntry(String Name) throws Exception {
+    public FoodEntry(String Name) throws Exception {
         this.Name = Name;
         this.Calorie = APICall("nutrition", Name);
     }
 
     @Override
-    public double GetCalorie() {
+    public double getCalorie() {
         return Calorie;
     }
 
     @Override
-    public String GetName() {
+    public String getName() {
         return Name;
     }
 
     @Override
     public String toString() {
-        return "ExerciseEntry{" +
+        return "FoodEntry{" +
                "Name='" + Name + '\'' +
                ", Calorie=" + Calorie +
                '}';

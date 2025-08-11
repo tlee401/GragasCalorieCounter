@@ -1,4 +1,4 @@
 public interface Loggable {
-    double GetCalorie();
-    String GetName();
+    double getCalorie();
+    String getName();
 }
