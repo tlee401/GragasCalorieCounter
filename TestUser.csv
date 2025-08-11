@@ -1,0 +1,8 @@
+UserProfile,Name,Age,HeightCm,ActivityLevel,Sex,WeightKg,TargetWeightKg
+UserProfile,TestUser,30,178,MODERATE,MALE,81.65,79.38
+
+DailyLog,Date,LoggableName,Calories
+DailyLog,2025-08-11,oatmeal,300.00
+DailyLog,2025-08-11,coffee,10.00
+DailyLog,2025-08-10,chicken salad,450.00
+DailyLog,2025-08-10,apple,95.00

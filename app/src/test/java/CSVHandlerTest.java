@@ -107,14 +107,15 @@ public class CSVHandlerTest {
             System.err.println("An error occurred during file operations: " + e.getMessage());
             e.printStackTrace();
         } finally {
+            System.err.println("\nFailed to delete the test file: " + fileName);
             // Clean up: delete the created file
-            if (testFile.exists()) {
-                if (testFile.delete()) {
-                    System.out.println("\nCleaned up test file: " + fileName);
-                } else {
-                    System.err.println("\nFailed to delete the test file: " + fileName);
-                }
-            }
+            // if (testFile.exists()) {
+            //     if (testFile.delete()) {
+            //         System.out.println("\nCleaned up test file: " + fileName);
+            //     } else {
+            //         System.err.println("\nFailed to delete the test file: " + fileName);
+            //     }
+            // }
         }
     }
 }
