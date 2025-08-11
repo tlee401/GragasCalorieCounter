@@ -14,7 +14,9 @@ import GragasApp.model.Loggable;
 
 /**
  * A view that displays all historical daily logs for a user.
- * It shows a list of dates and the food entries for the selected date.
+ * This panel is composed of a list of selectable dates on the west and a table on the center
+ * that shows the food entries for the selected date. It provides a way for users to review
+ * their past caloric intake.
  */
 public class AllLogsView extends JPanel {
 
@@ -24,6 +26,10 @@ public class AllLogsView extends JPanel {
     private final DefaultTableModel logEntriesTableModel;
     private final JButton backButton;
 
+    /**
+     * Constructs the AllLogsView panel and initializes all its UI components.
+     * It sets up the date list, the log entries table, and the navigation button.
+     */
     public AllLogsView() {
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createTitledBorder("All Daily Logs"));
@@ -68,8 +74,9 @@ public class AllLogsView extends JPanel {
     }
 
     /**
-     * Populates the list of dates from the user's daily logs.
-     * @param logs The list of DailyLog objects.
+     * Populates the list of dates from the user's collection of daily logs.
+     * The dates are sorted in reverse chronological order.
+     * @param logs The list of DailyLog objects from the user's profile.
      */
     public void populateLogDates(List<DailyLog> logs) {
         dateListModel.clear();
@@ -80,7 +87,8 @@ public class AllLogsView extends JPanel {
     }
 
     /**
-     * Updates the food entries table based on the selected log.
+     * Updates the food entries table to display the contents of a specific daily log.
+     * If the provided log is null, the table is cleared.
      * @param log The DailyLog to display.
      */
     public void updateLogEntries(DailyLog log) {
@@ -92,14 +100,26 @@ public class AllLogsView extends JPanel {
         }
     }
 
+    /**
+     * Gets the date currently selected in the date list.
+     * @return The selected LocalDate, or null if there is no selection.
+     */
     public LocalDate getSelectedDate() {
         return dateList.getSelectedValue();
     }
 
+    /**
+     * Adds an ActionListener to handle changes in the date list selection.
+     * @param listener The ListSelectionListener to be notified of selection changes.
+     */
     public void addDateSelectionListener(ListSelectionListener listener) {
         dateList.addListSelectionListener(listener);
     }
 
+    /**
+     * Adds an ActionListener to the "Back to Dashboard" button.
+     * @param listener The ActionListener to be notified of button clicks.
+     */
     public void addBackToDashboardListener(ActionListener listener) {
         backButton.addActionListener(listener);
     }
