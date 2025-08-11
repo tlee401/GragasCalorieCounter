@@ -10,6 +10,13 @@ public class CSVHandler {
 
     // Method to save a single UserProfile to a CSV file
     public void saveUserProfileToCsv(UserProfile user) throws IOException {
+        // Check if a user with the same name already exists in the list
+        for (UserProfile existingUser : userProfiles) {
+            if (existingUser.getName().equals(user.getName())) {
+                throw new IllegalArgumentException("A user with the name '" + user.getName() + "' already exists.");
+            }
+        }
+        
         String fileName = user.getName() + FILE_EXTENSION;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
             // Write UserProfile header and data
