@@ -13,7 +13,7 @@ public class FoodEntry extends APICaller implements Loggable {
     if (calories < 0) {
       throw new IllegalArgumentException("Calories cannot be negative");
     }
-    this.name = name;
+    this.name = name.trim().toLowerCase();
     this.calories = calories;
   }
 
