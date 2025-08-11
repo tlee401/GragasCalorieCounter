@@ -13,7 +13,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * The main controller for the application.
+ * The main controller for the application, adhering to the MVC pattern.
+ * This class acts as the intermediary between the View (GUI) and the Model (data and business logic).
+ * It handles user interactions from the view, processes them, and updates the view in response.
  */
 public class AppController {
 
@@ -23,6 +25,13 @@ public class AppController {
 
     private UserProfile currentUser;
 
+    /**
+     * Constructs the AppController.
+     * It initializes the application by linking the main view with the data handler,
+     * loading initial data, and attaching event listeners to the UI components.
+     * @param view The main JFrame of the application.
+     * @param csvHandler The handler responsible for reading/writing user data to CSV files.
+     */
     public AppController(MainView view, CSVHandler csvHandler) {
         this.view = view;
         this.csvHandler = csvHandler;
@@ -32,6 +41,10 @@ public class AppController {
         attachListeners();
     }
     
+    /**
+     * Loads existing user profiles from CSV files at startup and populates the
+     * user selection dropdown in the view.
+     */
     private void loadInitialData() {
         try {
             csvHandler.loadUserProfilesFromCsvs();
@@ -43,6 +56,10 @@ public class AppController {
         }
     }
 
+    /**
+     * Attaches all necessary event listeners from this controller to the UI components
+     * in the various views (UserSelectionView, DashboardView, AllLogsView).
+     */
     private void attachListeners() {
         // User Selection View Listeners
         view.getUserSelectionView().addLoadProfileListener(this::handleLoadProfile);
@@ -52,15 +69,20 @@ public class AppController {
         view.getDashboardView().addAddFoodListener(this::handleAddFood);
         view.getDashboardView().addSaveChangesListener(this::handleSaveChanges);
         view.getDashboardView().addSwitchUserListener(this::handleSwitchUser);
-        view.getDashboardView().addEditWeightListener(this::handleEditWeight); // ADDED
-        view.getDashboardView().addEditTargetWeightListener(this::handleEditTargetWeight); // ADDED
-        view.getDashboardView().addViewAllLogsListener(this::handleViewAllLogs); // ADDED
+        view.getDashboardView().addEditWeightListener(this::handleEditWeight); 
+        view.getDashboardView().addEditTargetWeightListener(this::handleEditTargetWeight); 
+        view.getDashboardView().addViewAllLogsListener(this::handleViewAllLogs); 
 
-        // All Logs View Listeners (ADDED)
+        // All Logs View Listeners
         view.getAllLogsView().addBackToDashboardListener(_ -> view.showDashboard());
         view.getAllLogsView().addDateSelectionListener(this::handleDateSelectionChange);
     }
 
+    /**
+     * Handles the "Load Profile" button event. It retrieves the selected user from the view,
+     * finds the corresponding UserProfile object, and updates the dashboard.
+     * @param e The ActionEvent triggered by the button click.
+     */
     private void handleLoadProfile(ActionEvent e) {
         String selectedUserName = view.getUserSelectionView().getSelectedUser();
         if (selectedUserName == null || selectedUserName.isEmpty()) {
@@ -79,6 +101,12 @@ public class AppController {
         }
     }
 
+    /**
+     * Handles the "Create Profile" button event. It reads data from the input fields,
+     * creates a new UserProfile object (handling metric/imperial conversion),
+     * saves it to a CSV file, and navigates to the dashboard for the new user.
+     * @param e The ActionEvent triggered by the button click.
+     */
     private void handleCreateProfile(ActionEvent e) {
         try {
             String name = view.getUserSelectionView().getNewUserName();
@@ -112,6 +140,12 @@ public class AppController {
         }
     }
 
+    /**
+     * Handles the "Add Food" button event. It takes the food description from the input field,
+     * retrieves its calorie information, creates a new FoodEntry, adds it to today's log,
+     * and updates the view to reflect the change.
+     * @param e The ActionEvent triggered by the button click.
+     */
     private void handleAddFood(ActionEvent e) {
         String foodDescription = view.getDashboardView().getFoodInput();
         if (foodDescription.trim().isEmpty()) {
@@ -131,7 +165,7 @@ public class AppController {
     
     /**
      * Handles the "Save Changes" action, persisting the current user's state to a CSV file.
-     * (MODIFIED to be fully functional)
+     * @param e The ActionEvent triggered by the button click.
      */
     private void handleSaveChanges(ActionEvent e) {
         if (currentUser == null) return;
@@ -143,13 +177,20 @@ public class AppController {
         }
     }
     
+    /**
+     * Handles the "Switch User" button event, returning the user to the initial
+     * profile selection screen.
+     * @param e The ActionEvent triggered by the button click.
+     */
     private void handleSwitchUser(ActionEvent e) {
         currentUser = null;
         view.showUserSelection();
     }
 
     /**
-     * Handles navigating to the AllLogsView.
+     * Handles navigating to the AllLogsView. This populates the view with all historical
+     * log dates for the current user and switches the main card layout to show it.
+     * @param e The ActionEvent triggered by the button click.
      */
     private void handleViewAllLogs(ActionEvent e) {
         if (currentUser == null) return;
@@ -165,7 +206,10 @@ public class AppController {
     }
 
     /**
-     * Handles when a user selects a date from the list in the AllLogsView.
+     * Handles a change in the selected date in the AllLogsView.
+     * It finds the log corresponding to the newly selected date and updates the
+     * food entry table with its contents.
+     * @param e The ListSelectionEvent triggered by the list selection.
      */
     private void handleDateSelectionChange(ListSelectionEvent e) {
         // Ensure the event is processed only once
@@ -183,7 +227,9 @@ public class AppController {
 
 
     /**
-     * Handles editing the current user's weight.
+     * Handles editing the current user's weight. It prompts the user for a new
+     * weight value and updates the UserProfile model and the dashboard view.
+     * @param e The ActionEvent triggered by the button click.
      */
     private void handleEditWeight(ActionEvent e) {
         if (currentUser == null) return;
@@ -206,7 +252,9 @@ public class AppController {
     }
     
     /**
-     * Handles editing the current user's target weight.
+     * Handles editing the current user's target weight. It prompts the user for a new
+     * target weight and updates the UserProfile model and the dashboard view.
+     * @param e The ActionEvent triggered by the button click.
      */
     private void handleEditTargetWeight(ActionEvent e) {
         if (currentUser == null) return;
@@ -229,7 +277,8 @@ public class AppController {
     }
 
     /**
-     * Populates the dashboard view with the current user's data.
+     * Populates the dashboard view with the current user's data. This method is called
+     * whenever the dashboard needs to be refreshed with the latest model data.
      */
     private void updateDashboard() {
         if (currentUser == null) return;
@@ -247,6 +296,10 @@ public class AppController {
         updateCalorieSummary();
     }
 
+    /**
+     * Refreshes the food log table in the dashboard view with entries from a given log.
+     * @param log The DailyLog whose entries should be displayed.
+     */
     private void updateFoodLogTable(DailyLog log) {
         DefaultTableModel model = (DefaultTableModel) view.getDashboardView().getFoodLogTableModel();
         model.setRowCount(0);
@@ -255,6 +308,10 @@ public class AppController {
         }
     }
 
+    /**
+     * Recalculates the user's calorie summary (TDEE, consumed, remaining) and updates
+     * the dashboard view.
+     */
     private void updateCalorieSummary() {
         double tdee = calorieCalculator.calculateTdee(currentUser);
         double consumed = getTodaysLog().getTotalCalories();
@@ -266,6 +323,11 @@ public class AppController {
         );
     }
     
+    /**
+     * Retrieves the DailyLog for the current date. If one does not exist, it creates a new
+     * log, adds it to the current user's profile, and returns it.
+     * @return The DailyLog for today.
+     */
     private DailyLog getTodaysLog() {
         LocalDate today = LocalDate.now();
         Optional<DailyLog> logOpt = currentUser.getLogs().stream()

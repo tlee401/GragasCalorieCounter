@@ -10,7 +10,10 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 /**
- * Panel for selecting an existing user or creating a new one.
+ * A panel that provides the initial user interface for the application.
+ * It allows a user to either select and load an existing profile from a dropdown
+ * or create a new profile by filling out a form. It also handles unit selection
+ * (metric/imperial) for new profile creation.
  */
 public class UserSelectionView extends JPanel {
 
@@ -33,6 +36,11 @@ public class UserSelectionView extends JPanel {
     private final JLabel targetWeightLabel;
 
 
+    /**
+     * Constructs the UserSelectionView panel and initializes all its UI components.
+     * The layout is split into two main sections: one for loading existing profiles
+     * and one for creating new ones.
+     */
     public UserSelectionView() {
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -161,6 +169,10 @@ public class UserSelectionView extends JPanel {
         add(newUserPanel, gbc);
     }
 
+    /**
+     * Updates the text labels for height and weight to reflect the currently
+     * selected unit system (metric or imperial).
+     */
     private void updateUnitLabels() {
         if (unitToggle.isSelected()) {
             heightLabel.setText("Height (in):");
@@ -173,7 +185,10 @@ public class UserSelectionView extends JPanel {
         }
     }
     
-    // --- Public methods for Controller interaction ---
+    /**
+     * Populates the user selection dropdown with a list of user profiles.
+     * @param profiles A list of UserProfile objects to display.
+     */
     public void populateUserList(List<UserProfile> profiles) {
         userComboBox.removeAllItems();
         for (UserProfile profile : profiles) {
@@ -181,33 +196,91 @@ public class UserSelectionView extends JPanel {
         }
     }
     
+    /**
+     * Adds a single user profile to the selection dropdown.
+     * @param profile The UserProfile to add.
+     */
     public void addUserToList(UserProfile profile) {
         userComboBox.addItem(profile.getName());
     }
 
+    /**
+     * Gets the name of the user currently selected in the dropdown.
+     * @return The selected user's name as a String.
+     */
     public String getSelectedUser() {
         return (String) userComboBox.getSelectedItem();
     }
 
+    /**
+     * Adds an ActionListener to the "Load Profile" button.
+     * @param listener The ActionListener to be notified of button clicks.
+     */
     public void addLoadProfileListener(ActionListener listener) {
         loadProfileButton.addActionListener(listener);
     }
 
 
+    /**
+     * Adds an ActionListener to the "Create Profile" button.
+     * @param listener The ActionListener to be notified of button clicks.
+     */
     public void addCreateProfileListener(ActionListener listener) {
         createProfileButton.addActionListener(listener);
     }
 
-    // Getters for creation form
+    /**
+     * Gets the user name from the new profile form.
+     * @return The entered name.
+     */
     public String getNewUserName() { return nameField.getText(); }
+
+    /**
+     * Gets the age from the new profile form.
+     * @return The entered age.
+     */
     public int getAge() { return Integer.parseInt(ageField.getText()); }
+
+
+    /**
+     * Gets the height from the new profile form.
+     * @return The entered height.
+     */
     public double getUserHeight() { return Double.parseDouble(heightField.getText()); }
+
+    /**
+     * Gets the weight from the new profile form.
+     * @return The entered weight.
+     */
     public double getWeight() { return Double.parseDouble(weightField.getText()); }
+
+    /**
+     * Gets the target weight from the new profile form.
+     * @return The entered target weight.
+     */
     public double getTargetWeight() { return Double.parseDouble(targetWeightField.getText()); }
+
+    /**
+     * Gets the selected sex from the new profile form.
+     * @return The selected Sex enum value.
+     */
     public Sex getSex() { return (Sex) sexComboBox.getSelectedItem(); }
+
+    /**
+     * Gets the selected activity level from the new profile form.
+     * @return The selected ActivityLevel enum value.
+     */
     public ActivityLevel getActivityLevel() { return (ActivityLevel) activityLevelComboBox.getSelectedItem(); }
+
+    /**
+     * Checks if the imperial unit system is selected.
+     * @return true if imperial units are selected, false otherwise.
+     */
     public boolean isImperial() { return unitToggle.isSelected(); }
     
+    /**
+     * Clears all input fields in the "Create New Profile" form.
+     */
     public void clearCreationFields() {
         nameField.setText("");
         ageField.setText("");

@@ -5,7 +5,9 @@ import java.awt.*;
 
 /**
  * The main window (JFrame) of the application.
- * It uses a CardLayout to switch between the UserSelectionView and the DashboardView.
+ * This class serves as the root container for all other UI panels (views).
+ * It uses a CardLayout to manage and switch between different views like
+ * the user selection screen, the main dashboard, and the all logs view.
  */
 public class MainView extends JFrame {
 
@@ -21,6 +23,10 @@ public class MainView extends JFrame {
     private static final String DASHBOARD_PANEL = "DashboardPanel";
     private static final String ALL_LOGS_PANEL = "AllLogsPanel"; 
 
+    /**
+     * Constructs the MainView frame, initializes the CardLayout, and adds
+     * all subordinate view panels to it.
+     */
     public MainView() {
         setTitle("Gragas Calorie Counter");
         setSize(800, 600);
@@ -44,37 +50,66 @@ public class MainView extends JFrame {
         add(mainPanel);
     }
 
-    // Getters for the sub-views so the controller can access them
+    /**
+     * Returns the instance of the UserSelectionView.
+     * Allows the controller to access and attach listeners to this view.
+     * @return The UserSelectionView panel.
+     */
     public UserSelectionView getUserSelectionView() {
         return userSelectionView;
     }
 
+    /**
+     * Returns the instance of the DashboardView.
+     * Allows the controller to access and attach listeners to this view.
+     * @return The DashboardView panel.
+     */
     public DashboardView getDashboardView() {
         return dashboardView;
     }
 
+    /**
+     * Returns the instance of the AllLogsView.
+     * Allows the controller to access and attach listeners to this view.
+     * @return The AllLogsView panel.
+     */
     public AllLogsView getAllLogsView() {
         return allLogsView;
     }
 
-    // Methods to switch between panels
+    /**
+     * Switches the view to the user selection panel.
+     */
     public void showUserSelection() {
         cardLayout.show(mainPanel, USER_SELECTION_PANEL);
     }
 
+    /**
+     * Switches the view to the main dashboard panel.
+     */
     public void showDashboard() {
         cardLayout.show(mainPanel, DASHBOARD_PANEL);
     }
 
+    /**
+     * Switches the view to the all logs panel.
+     */
     public void showAllLogs() {
         cardLayout.show(mainPanel, ALL_LOGS_PANEL);
     }
 
-    // Convenience methods for showing dialogs
+    /**
+     * Displays a standardized error message dialog.
+     * @param message The error message to display.
+     */
     public void showError(String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Displays a standardized informational message dialog.
+     * @param message The information message to display.
+     */
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "Information", JOptionPane.INFORMATION_MESSAGE);
     }

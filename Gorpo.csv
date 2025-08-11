@@ -1,0 +1,5 @@
+UserProfile,Name,Age,HeightCm,ActivityLevel,Sex,WeightKg,TargetWeightKg
+UserProfile,Gorpo,20,127,LIGHT,FEMALE,90.72,136.08
+
+DailyLog,Date,LoggableName,Calories
+DailyLog,2025-08-11,salad and a protein bar,433.30

@@ -7,8 +7,10 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 /**
- * The main dashboard view. Displays user info, calorie summary, and the daily food log.
- * (MODIFIED to include target weight and edit buttons)
+ * The main dashboard view, which serves as the primary interface for an authenticated user.
+ * This panel displays the user's profile information, a summary of their daily calorie intake,
+ * and a table of food items logged for the current day. It also provides controls for
+ * editing user data, adding food, and navigating to other views.
  */
 public class DashboardView extends JPanel {
 
@@ -17,11 +19,11 @@ public class DashboardView extends JPanel {
     private final JLabel ageLabel = new JLabel();
     private final JLabel weightLabel = new JLabel();
     private final JLabel heightLabel = new JLabel();
-    private final JLabel targetWeightLabel = new JLabel(); // ADDED
+    private final JLabel targetWeightLabel = new JLabel(); 
 
     // Edit Buttons for Profile
-    private final JButton editWeightButton; // ADDED
-    private final JButton editTargetWeightButton; // ADDED
+    private final JButton editWeightButton; 
+    private final JButton editTargetWeightButton;
 
     // Calorie Summary
     private final JLabel tdeeLabel = new JLabel();
@@ -37,8 +39,13 @@ public class DashboardView extends JPanel {
     // Actions
     private final JButton saveChangesButton;
     private final JButton switchUserButton;
-    private final JButton viewAllLogsButton; // ADDED
+    private final JButton viewAllLogsButton; 
 
+    /**
+     * Constructs the DashboardView panel and initializes all its UI components.
+     * The layout is structured with user info and calorie summary at the top,
+     * the daily food log in the center, and action buttons at the bottom.
+     */
     public DashboardView() {
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -84,7 +91,7 @@ public class DashboardView extends JPanel {
         profilePanel.add(weightLabel, gbc);
         gbc.gridx = 2; gbc.anchor = GridBagConstraints.EAST;
         profilePanel.add(editWeightButton, gbc);
-        gbc.anchor = GridBagConstraints.WEST; // Reset anchor
+        gbc.anchor = GridBagConstraints.WEST;
 
         // Row 4: Target Weight
         gbc.gridx = 0; gbc.gridy = 4;
@@ -145,14 +152,28 @@ public class DashboardView extends JPanel {
         add(actionPanel, BorderLayout.SOUTH);
     }
     
+    /**
+     * Updates the user profile information displayed on the dashboard.
+     * @param name The user's name.
+     * @param age The user's age.
+     * @param weight The user's current weight, formatted as a string.
+     * @param height The user's height, formatted as a string.
+     * @param targetWeight The user's target weight, formatted as a string.
+     */
     public void setProfileInfo(String name, String age, String weight, String height, String targetWeight) {
         nameLabel.setText(name);
         ageLabel.setText(age);
         weightLabel.setText(weight);
         heightLabel.setText(height);
-        targetWeightLabel.setText(targetWeight); // ADDED
+        targetWeightLabel.setText(targetWeight); 
     }
 
+    /**
+     * Updates the calorie summary panel with calculated values.
+     * @param tdee The user's Total Daily Energy Expenditure (Goal).
+     * @param consumed The total calories consumed for the day.
+     * @param remaining The remaining calories (TDEE - consumed).
+     */
     public void setCalorieSummary(String tdee, String consumed, String remaining) {
         tdeeLabel.setText(tdee + " kcal");
         consumedLabel.setText(consumed + " kcal");
@@ -167,38 +188,69 @@ public class DashboardView extends JPanel {
         }
     }
     
+    /**
+     * Retrieves the text from the food input field and clears it.
+     * @return The food description entered by the user.
+     */
     public String getFoodInput() {
         String input = foodInput.getText();
         foodInput.setText("");
         return input;
     }
 
+    /**
+     * Gets the table model for the daily food log.
+     * This allows the controller to directly manipulate the table's data.
+     * @return The DefaultTableModel for the food log.
+     */
     public DefaultTableModel getFoodLogTableModel() {
         return foodLogTableModel;
     }
     
+    /**
+     * Adds an ActionListener to the "Add Food" button.
+     * @param listener The ActionListener to be notified of button clicks.
+     */
     public void addAddFoodListener(ActionListener listener) {
         addFoodButton.addActionListener(listener);
     }
     
-    // ADDED listeners for new buttons
+    /**
+     * Adds an ActionListener to the "Edit Weight" button.
+     * @param listener The ActionListener to be notified of button clicks.
+     */
     public void addEditWeightListener(ActionListener listener) {
         editWeightButton.addActionListener(listener);
     }
 
+    /**
+     * Adds an ActionListener to the "Edit Target Weight" button.
+     * @param listener The ActionListener to be notified of button clicks.
+     */
     public void addEditTargetWeightListener(ActionListener listener) {
         editTargetWeightButton.addActionListener(listener);
     }
 
+    /**
+     * Adds an ActionListener to the "Save Changes" button.
+     * @param listener The ActionListener to be notified of button clicks.
+     */
     public void addSaveChangesListener(ActionListener listener) {
         saveChangesButton.addActionListener(listener);
     }
 
-    // ADDED listener for the new button
+    /**
+     * Adds an ActionListener to the "View All Logs" button.
+     * @param listener The ActionListener to be notified of button clicks.
+     */
     public void addViewAllLogsListener(ActionListener listener) {
         viewAllLogsButton.addActionListener(listener);
     }
     
+    /**
+     * Adds an ActionListener to the "Switch User" button.
+     * @param listener The ActionListener to be notified of button clicks.
+     */
     public void addSwitchUserListener(ActionListener listener) {
         switchUserButton.addActionListener(listener);
     }
