@@ -31,3 +31,4 @@ jacoco.exec
 # ===================== Local env/config (optional) =====================
 .env
 .env.*
+config.properties

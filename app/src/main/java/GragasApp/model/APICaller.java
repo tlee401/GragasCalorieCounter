@@ -1,16 +1,31 @@
 package GragasApp.model;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.util.Properties;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public abstract class APICaller {
-    private static final String APIKey = "Not_Actual_Key_Nice_Try";
+    private static final String APIKey = loadAPIKey();
     private static final String baseURL = "https://api.api-ninjas.com/v1/";
+
+    private static String loadAPIKey() {
+    try (FileInputStream input = new FileInputStream("config.properties")) {
+        Properties prop = new Properties();
+        prop.load(input);
+        return prop.getProperty("API_KEY");
+    } catch (IOException e) {
+        e.printStackTrace();
+        return "";
+    }
+}
 
     public double APICall(String endpoint, String query) throws Exception {
         String fullURL = baseURL + endpoint + "?query=" + 
